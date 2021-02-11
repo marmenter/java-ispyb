@@ -600,6 +600,7 @@
 
 			<shipment.upload.template>ispyb-template6.2_shipment.xlt</shipment.upload.template>
 			<shipment.upload.populatedTemplate>ispyb-template6.2_shipment.xls</shipment.upload.populatedTemplate>
+			<dewar.label.template>ParcelLabelsTemplate_ALBA.pdf</dewar.label.template>
 		</properties>
 	</profile>
   	
