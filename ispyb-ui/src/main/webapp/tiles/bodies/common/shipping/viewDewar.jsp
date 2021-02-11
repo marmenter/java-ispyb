@@ -38,6 +38,7 @@ Contributors : S. Delageniere, R. Leal, L. Launer, K. Levik, S. Veyrier, P. Bren
 										(Constants.SITE_IS_DLS())?	request.getContextPath() + "/user/viewDewarAction.do?reqCode=generateLabels":
 										(Constants.SITE_IS_EMBL())?	request.getContextPath() + "/reader/viewDewarAction.do?reqCode=generateLabels":	
 										(Constants.SITE_IS_MAXIV())? request.getContextPath() + "/reader/viewDewarAction.do?reqCode=generateLabels":	
+										(Constants.SITE_IS_ALBA())? request.getContextPath() + "/reader/viewDewarAction.do?reqCode=generateLabels":
 										"";
 	
 	String targetSample 			= request.getContextPath() + "/menuSelected.do?leftMenuId=11&topMenuId=10&targetUrl=/user/viewSample.do?reqCode=displayForDewar";
