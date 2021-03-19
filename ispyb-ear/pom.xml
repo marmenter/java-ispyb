@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>ispyb</groupId>
 		<artifactId>ispyb-parent</artifactId>
-		<version>5.18</version>
+		<version>5.28</version>
 	</parent>
 	<artifactId>ispyb-ear</artifactId>
 	<packaging>ear</packaging>
@@ -114,7 +114,7 @@
 				<dependency>
 					<groupId>commons-beanutils</groupId>
 					<artifactId>commons-beanutils</artifactId>
-					<version>1.7.0</version>
+					<version>1.9.4</version>
 				</dependency>
 				<dependency>
 					<groupId>ojdbc6</groupId>

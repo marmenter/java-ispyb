@@ -1,5 +1,6 @@
 package ispyb.ws.rest.proposal;
 
+import ispyb.common.util.StringUtils;
 import ispyb.common.util.Constants;
 import ispyb.common.util.PDFFormFiller;
 import ispyb.server.biosaxs.vos.dataAcquisition.StockSolution3VO;
@@ -15,6 +16,7 @@ import ispyb.server.common.vos.shipping.Shipping3VO;
 import ispyb.server.mx.services.ws.rest.dewar.DewarRestWsService;
 import ispyb.server.mx.vos.collections.Session3VO;
 import ispyb.ws.rest.RestWebService;
+import ispyb.server.common.vos.proposals.ProposalWS3VO;
 
 import java.io.ByteArrayOutputStream;
 import java.sql.Timestamp;
@@ -35,6 +37,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -269,6 +272,18 @@ public class DewarRestWebService extends RestWebService {
 						
 					}
 				}
+				if (Constants.SITE_IS_MAXIV()) {
+					ArrayList<String> p = StringUtils.GetProposalNumberAndCode(proposal);
+					String proposalCode = p.get(0);
+					String proposalNumber = p.get(2);
+					ProposalWS3VO proposalws3vo = getProposal3Service().findForWSByCodeAndNumber(proposalCode, proposalNumber);
+					Integer proposalId = proposalws3vo.getProposalId();
+					List<Dewar3VO> dewar3vos = getDewar3Service().findFiltered(proposalId, shippingId, null,
+					code, null, null, null, null, null, null, false, false);
+					if (dewar3vos != null && dewar3vos.size() > 0){
+						return this.sendError("You cannot have 2 dewars with the same name in the same shipment at MAXIV");
+					}
+				}
 				dewar3vo = getDewar3Service().create(dewar3vo);
 			} else {
 				dewar3vo = getDewar3Service().findByPk(dewarId, false, false);
@@ -314,8 +329,39 @@ public class DewarRestWebService extends RestWebService {
 		}
 		return null;
 	}
-	
-	
+
+
+	@RolesAllowed({"Manager", "Localcontact" })
+	@POST
+	@Path("{token}/dewar/updateStatus")
+	@Produces({ "application/json" })
+	public Response updateStatus(
+			@PathParam("token") String token,
+			@FormParam("location") String location,
+			@FormParam("barCode") String barCode,
+			@FormParam("username") String username)
+			throws Exception {
+
+		long start = this.logInit("updateStatus", logger, token, location,
+				barCode, username);
+
+		try {
+			Timestamp dateTime = getDateTime();
+			// Add dewar event in table
+			getDewarAPIService().addDewarLocation(barCode, username, dateTime, location, "", "");
+
+			// Update dewar info (Dewar, Shipping, DewarTransportHistory)
+			if (!getDewarAPIService().updateDewar(barCode, location, "", "")) {
+				throw new Exception("Cannot update the dewar status");
+			}
+			this.logFinish("updateStatus", start, logger);
+
+			return this.sendResponse(Status.OK);
+		} catch (Exception e) {
+			this.logError("updateStatus", e, start, logger);
+			return this.sendResponse(Response.Status.NOT_FOUND);
+		}
+	}
 
 
 	public byte[] getLabels(int dewarId) throws NamingException, Exception {
@@ -446,7 +492,7 @@ public class DewarRestWebService extends RestWebService {
 		fieldNamesAndValues.put("TF_sendingLaboratoryName",
 				sendingLaboratory.getName());
 		fieldNamesAndValues.put("TF_sendingLaboratoryAddress",
-				sendingLaboratory.getAddress());
+				StringUtils.breakString(sendingLaboratory.getAddress(), 30));
 
 		fieldNamesAndValues.put(
 				"TF_returnLabContactName",
@@ -468,7 +514,7 @@ public class DewarRestWebService extends RestWebService {
 		fieldNamesAndValues.put("TF_returnLaboratoryName",
 				returnLaboratory.getName());
 		fieldNamesAndValues.put("TF_returnLaboratoryAddress",
-				returnLaboratory.getAddress());
+				StringUtils.breakString(returnLaboratory.getAddress(), 30));
 
 		// default courier company (only if exists)
 		String defaultCourrierCompany = "unknown";

@@ -45,6 +45,8 @@ import ispyb.common.util.Constants;
 import ispyb.common.util.SendMailUtils;
 import ispyb.common.util.StringUtils;
 import ispyb.common.util.beamlines.ESRFBeamlineEnum;
+import ispyb.server.biosaxs.services.core.structure.Structure3Service;
+import ispyb.server.biosaxs.vos.assembly.Structure3VO;
 import ispyb.server.common.services.proposals.LabContact3Service;
 import ispyb.server.common.services.proposals.Person3Service;
 import ispyb.server.common.services.proposals.Proposal3Service;
@@ -209,6 +211,43 @@ public class ToolsForCollectionWebService {
 		} catch (Exception e) {
 			LOG.error("WS ERROR: findSessionsByProposalAndBeamLine - " + StringUtils.getCurrentDate() + " - " + code + ", " + number
 					+ ", " + beamLineName);
+			throw e;
+		}
+	}
+	
+	/**
+	 * returns the sessions  to be protected afetr a dealy and in a particular window
+	 * this WS is only used for tests on ESRF site
+	 * 
+	 * @param delay
+	 * @param window
+	 * @return
+	 * @throws Exception
+	 */
+	@WebMethod
+	@WebResult(name = "Sessions")
+	public SessionWS3VO[] findSessionsToBeProtected(@WebParam(name = "delay") Integer delay, 
+			@WebParam(name = "window") Integer window) throws Exception {
+
+		try {
+			LOG.debug("findSessionsToBeProtected( : delay= " + delay + ", window= " + window);
+			long startTime = System.currentTimeMillis();
+			Session3Service sessionService = (Session3Service) ejb3ServiceLocator.getLocalService(Session3Service.class);
+
+			SessionWS3VO[] ret = sessionService.findForWSToBeProtected(delay, window);
+			
+			if (ret == null || ret.length <1) {			
+					LOG.debug("findSessionsToBeProtected no sessions found ") ;					
+			}
+
+			long endTime = System.currentTimeMillis();
+			long duration = endTime - startTime;
+			LOG.debug("findSessionsToBeProtected(delay= " + delay + ", window= " + window
+					+ " time = " + duration + " ms");
+			return ret;
+			
+		} catch (Exception e) {
+			LOG.error("WS ERROR: findSessionsToBeProtected - " + StringUtils.getCurrentDate() + " - " + delay + ", " + window);
 			throw e;
 		}
 	}
@@ -841,7 +880,7 @@ public class ToolsForCollectionWebService {
 	public Integer storeOrUpdateEnergyScan(@WebParam(name = "energyScan")
 	EnergyScanWS3VO vo) throws Exception {
 		try {
-			LOG.debug("storeOrUpdateEnergyScan");
+			LOG.debug("storeOrUpdateEnergyScan - " +vo.toWSString());
 			// if vo is null we return null, no creation
 			if (vo == null)
 				return null;
@@ -1164,7 +1203,7 @@ public class ToolsForCollectionWebService {
 	String fileName, @WebParam(name = "workflowId")
 	Integer workflowId) throws Exception {
 		try {
-			LOG.debug("updateDataCollectionGroupWorkflowId : workflowId=" + workflowId + ", fileLocation= " + fileLocation
+			LOG.info("updateDataCollectionGroupWorkflowId : workflowId=" + workflowId + ", fileLocation= " + fileLocation
 					+ ", fileName= " + fileName);
 			// retrieve the datacollection from fileLocation and fileName
 			DataCollection3VO dc = null;
@@ -1709,6 +1748,41 @@ public class ToolsForCollectionWebService {
 			throw e;
 		}
 	}
+	
+	@WebMethod
+	@WebResult(name = "structures")
+	public String getLigandsByDataCollectionId(
+	@WebParam(name = "dataCollectionId")Integer dataCollectionId) throws Exception {
+		try {
+			Structure3Service structure3service = (Structure3Service) ejb3ServiceLocator.getLocalService(Structure3Service.class);
+			List<Structure3VO> structures = structure3service.getLigandsByDataCollectionId(dataCollectionId);
+			if (structures != null){
+				return convertStructuresToCSV(structures);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private String convertStructuresToCSV(List<Structure3VO> structures) {
+
+		try {
+			StringBuilder sb = new StringBuilder();
+			for (Structure3VO structure3vo : structures) {
+				sb.append(structure3vo.getGroupName());
+				sb.append(",");
+				sb.append(structure3vo.getType());
+				sb.append(",");
+				sb.append(structure3vo.getFilePath());
+				sb.append("\n");
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
 	
 	@WebMethod
 	@WebResult(name = "robotActionId")

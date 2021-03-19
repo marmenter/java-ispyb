@@ -856,10 +856,8 @@ public final class Constants {
 	/*
 	 * sets of constants
 	 */
-	// public static final String[] BEAMLINE_LOCATION_ESRF = { "ID14-1", "ID14-2", "ID14-3", "ID14-4", "ID23-1",
-	// "ID23-2",
-	// "ID29", "BM14U", "BM16", "ID14 1", "ID14 2", "ID14 3", "ID14 4", "ID23 1", "ID23 2", "BM29", "BM30A" };
-
+	// for ESRF, it is replaced by ESRFBeamlineEnum
+	
 	public static final String[] BEAMLINE_LOCATION_DLS = { "i02", "i03", "i04", "i04-1", "i24" };
 
 	public static final String[] BEAMLINE_LOCATION_MAXIV = { "BioMAX", "MX" };
@@ -885,9 +883,6 @@ public final class Constants {
 		}
 	}
 
-	// public static final String[] BEAMLINE_LOCATION = (SITE_IS_ESRF()) ? BEAMLINE_LOCATION_ESRF
-	// : (SITE_IS_DLS()) ? BEAMLINE_LOCATION_DLS : BEAMLINE_LOCATION_DEFAULT;
-
 	public static final String[] BEAMLINE_LOCATION = BEAMLINE_LOCATION_DEFAULT;
 
 	public static final int LOCATIONS_IN_SC = Integer.parseInt(getProperty("samplechanger.locations", "5"));
@@ -904,7 +899,7 @@ public final class Constants {
 
 	public static final String[] CONTAINER_CAPACITY_EMBL = { "10", "16", "6", "0" };
 
-	public static final String[] CONTAINER_CAPACITY_MAXIV = { "10", "16", "6", "0" };
+	public static final String[] CONTAINER_CAPACITY_MAXIV = { "16", "16", "6", "0" };
 
 	public static final String[] CONTAINER_CAPACITY_SOLEIL = { "10", "16", "6", "0" };
 

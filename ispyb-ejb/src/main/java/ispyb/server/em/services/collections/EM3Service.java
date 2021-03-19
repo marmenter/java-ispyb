@@ -49,7 +49,7 @@ public interface EM3Service {
 			String doseWeight, String totalMotion,
 			String averageMotionPerFrame, String driftPlotFullPath,
 			String micrographFullPath, String micrographSnapshotFullPath,
-			String correctedDoseMicrographFullPath, String logFileFullPath);
+			String correctedDoseMicrographFullPath, String logFileFullPath) throws Exception;
 
 	CTF addCTF(String proposal, String moviePath,
 			String spectraImageSnapshotFullPath, String spectraImageFullPath, String defocusU,
@@ -71,7 +71,7 @@ public interface EM3Service {
 
 	List<Map<String, Object>> getStatsByDataCollectionIds(int proposalId, String dataCollectionIdList);
 
-	Collection<? extends Map<String, Object>> getStatsByDataSessionIds(int proposalId, Integer id);
+	Collection<? extends Map<String, Object>> getStatsByDataDataCollectionGroupId(Integer id);
 
 	List<Map<String, Object>> getStatsBySessionId(int proposalId, int parseInt);
 }
