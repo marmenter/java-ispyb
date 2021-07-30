@@ -32,9 +32,9 @@ import ispyb.server.common.services.shipping.DewarAPIService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Modifier;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -110,6 +110,7 @@ public  class ParentWebService {
 	 */
 	protected Response downloadFile(byte[] bs, String fileName) {
 		ResponseBuilder response = Response.ok((Object) bs);
+		response.header("Content-Type", URLConnection.guessContentTypeFromName(fileName));
 		response.header("Content-Disposition", "attachment; filename=" + fileName);
 		return response.header("Access-Control-Allow-Origin", "*").build();
 	}
