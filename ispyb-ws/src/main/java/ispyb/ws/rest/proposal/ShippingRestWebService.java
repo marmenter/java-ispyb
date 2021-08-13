@@ -356,6 +356,10 @@ public class ShippingRestWebService extends MXRestWebService {
 				logger.info(String.format("\t %s %s", dewar3vo.getCode(), dewar3vo.getContainerVOs().size()));
 				for (Container3VO container : dewar3vo.getContainerVOs()) {
 					logger.info(String.format("\t\t %s %s", container.getCode(), container.getSampleVOs().size()));
+					// Fix for csv imports of spinepucks - Ensure the type is stored properly
+					if (container.getContainerType().toLowerCase().replaceAll("\\s+","").equals("spinepuck")) {
+						container.setContainerType(Constants.CONTAINER_TYPE_SPINE);
+					}
 					for (BLSample3VO sample : container.getSampleVOs()) {
 						logger.info(String.format("\t\t\t %s %s", sample.getName(),sample.getCrystalVO().getCellA(), sample.getCrystalVO().getCellB()));
 					}
