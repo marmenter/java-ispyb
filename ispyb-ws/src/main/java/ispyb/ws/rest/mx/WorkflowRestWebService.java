@@ -149,7 +149,7 @@ public class WorkflowRestWebService extends MXRestWebService {
 			WorkflowStep3VO workflowStep = this.getWorkflowStep3Service().findById(workflowStepId, this.getProposalId(proposal));
 			if (workflowStep != null){
 				if (workflowStep.getResultFilePath() != null){
-					if (Constants.SITE_IS_MAXIV()) {
+					if (Constants.SITE_IS_MAXIV() || Constants.SITE_IS_ALBA()) {
 						String pathToJsonFile = workflowStep.getHtmlResultFilePath().replace("index.html","report.json");
 						workflowStep.setResultFilePath(pathToJsonFile);
 					}
