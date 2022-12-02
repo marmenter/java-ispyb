@@ -223,7 +223,7 @@ public class CrystalRestWebService extends MXRestWebService {
 					// Save file name to both Structure and also Crystal models ONLY IF file type is PDB
 					File file = new File(filePath);
 					String fileName = file.getName();
-					String fileDir = file.getParent();
+					String fileDir = file.getParent() + "/";
 					logger.debug("File type is " + form.getType());
 					// Crystal
 					if (Objects.equals(form.getType(), "PDB")) {
