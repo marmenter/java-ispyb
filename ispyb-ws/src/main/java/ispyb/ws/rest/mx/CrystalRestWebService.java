@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -232,12 +233,22 @@ public class CrystalRestWebService extends MXRestWebService {
 				logger.info("saveStructure. Copying to disk. filepath=" + filePath);
 				Crystal3VO crystal = this.getCrystal3Service().findByPk(crystalId, true);
 				if (crystal != null){
+					// Save file name to both Structure and also Crystal models ONLY IF file type is PDB
+					File file = new File(filePath);
+					String fileName = file.getName();
+					String fileDir = file.getParent();
+					// Crystal
+					if (Objects.equals(form.getType(), "PDB")) {
+						crystal.setPdbFileName(fileName); // file name
+						crystal.setPdbFilePath(fileDir); // file dir
+					}
+					// Structure
 					Structure3VO structure = new Structure3VO();
 					structure.setCrystalId(crystalId);
 					structure.setType(form.getType());
 					structure.setGroupName(form.getGroupName());
-					structure.setFilePath(filePath);
-					structure.setName(new File(filePath).getName());					
+					structure.setFilePath(filePath); // full path
+					structure.setName(fileName); // file name
 					this.getExperiment3Service().saveStructure(structure);
 				}
 				else{
