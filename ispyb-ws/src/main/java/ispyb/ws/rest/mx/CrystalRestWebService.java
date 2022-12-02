@@ -238,6 +238,7 @@ public class CrystalRestWebService extends MXRestWebService {
 					String fileName = file.getName();
 					String fileDir = file.getParent();
 					// Crystal
+					logger.debug("File type is " + form.getType());
 					if (Objects.equals(form.getType(), "PDB")) {
 						crystal.setPdbFileName(fileName); // file name
 						crystal.setPdbFilePath(fileDir); // file dir
