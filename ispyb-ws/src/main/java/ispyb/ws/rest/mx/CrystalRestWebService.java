@@ -1,34 +1,22 @@
 package ispyb.ws.rest.mx;
 
+import file.FileUploadForm;
+import ispyb.server.biosaxs.vos.assembly.Structure3VO;
+import ispyb.server.mx.vos.autoproc.SpaceGroup3VO;
+import ispyb.server.mx.vos.sample.Crystal3VO;
+import ispyb.server.mx.vos.sample.Protein3VO;
+import org.apache.log4j.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.apache.log4j.Logger;
-import org.apache.poi.util.StringUtil;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-
-import file.FileUploadForm;
-import ispyb.server.biosaxs.vos.assembly.Macromolecule3VO;
-import ispyb.server.biosaxs.vos.assembly.Structure3VO;
-import ispyb.server.mx.vos.autoproc.GeometryClassname3VO;
-import ispyb.server.mx.vos.autoproc.SpaceGroup3VO;
-import ispyb.server.mx.vos.sample.Crystal3VO;
-import ispyb.server.mx.vos.sample.Protein3VO;
 
 @Path("/")
 public class CrystalRestWebService extends MXRestWebService {
@@ -225,8 +213,7 @@ public class CrystalRestWebService extends MXRestWebService {
 			@PathParam("token") String token,
 			@PathParam("proposal") String proposal,
 			@PathParam("crystalid") Integer crystalId,
-			@MultipartForm FileUploadForm form) throws IllegalStateException, IOException{
-				
+			@MultipartForm FileUploadForm form) throws IllegalStateException, IOException {
 		try {
 			if (form.getInputStream() != null){
 				String filePath = this.copyFileToDisk(proposal, form);
@@ -238,13 +225,12 @@ public class CrystalRestWebService extends MXRestWebService {
 					String fileName = file.getName();
 					String fileDir = file.getParent();
 					logger.debug("File type is " + form.getType());
-					logger.debug("Type is " + form.getType().getClass().getSimpleName());
-					logger.debug("2nd type is " + "PDB".getClass().getSimpleName());
 					// Crystal
 					if (Objects.equals(form.getType(), "PDB")) {
-						logger.debug("Saving file to Crystal model");
 						crystal.setPdbFileName(fileName); // file name
 						crystal.setPdbFilePath(fileDir); // file dir
+						logger.debug("Saving file to Crystal model");
+						this.getCrystal3Service().update(crystal);
 						logger.debug("Saved file to Crystal model");
 					}
 					// Structure
@@ -288,8 +274,12 @@ public class CrystalRestWebService extends MXRestWebService {
 				logger.info(String.format("removeStructure. crystalId=%s structureId=%s token=%s", crystalId, structureId, token));
 				Crystal3VO crystal = this.getCrystal3Service().findByPk(crystalId, true);
 				if (crystal != null){
-										
 					Structure3VO structure = this.getExperiment3Service().findStructureById(structureId);
+					if (Objects.equals(structure.getType(), "PDB")) {
+						crystal.setPdbFileName(null);
+						crystal.setPdbFilePath(null);
+						this.getCrystal3Service().update(crystal);
+					}
 					/** Check that structure belongs to crystal **/
 					if (structure.getCrystalId().equals(crystal.getCrystalId())){
 						/** Checks that proposal corresponds to crystal **/
