@@ -46,6 +46,8 @@ public interface LabContact3Service {
 	 */
 	public LabContact3VO update(final LabContact3VO vo) throws Exception;
 
+	public abstract LabContact3VO merge(LabContact3VO detachedInstance);
+
 	/**
 	 * Remove the LabContact3 from its pk.
 	 * 

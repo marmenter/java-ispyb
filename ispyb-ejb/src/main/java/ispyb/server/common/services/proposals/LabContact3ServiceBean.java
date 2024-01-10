@@ -101,6 +101,14 @@ public class LabContact3ServiceBean implements LabContact3Service, LabContact3Se
 		return this.entityManager.merge(vo);
 	}
 
+	public LabContact3VO merge(LabContact3VO detachedInstance) {
+		try {
+			return entityManager.merge(detachedInstance);
+		} catch (RuntimeException re) {
+			throw re;
+		}
+	}
+
 	/**
 	 * Remove the LabContact3 from its pk
 	 * 

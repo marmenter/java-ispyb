@@ -4,6 +4,7 @@ import generated.ws.smis.ProposalParticipantInfoLightVO;
 import ispyb.common.util.Constants;
 import ispyb.common.util.StringUtils;
 import ispyb.server.common.vos.proposals.LabContact3VO;
+import ispyb.server.common.vos.proposals.Laboratory3VO;
 import ispyb.server.common.vos.proposals.Person3VO;
 import ispyb.server.common.vos.proposals.Proposal3VO;
 import ispyb.server.common.vos.shipping.Container3VO;
@@ -105,27 +106,40 @@ public class ShippingRestWebService extends MXRestWebService {
 		try {
 			LabContact3VO labContact = this.getGson().fromJson(labContactJson, LabContact3VO.class);
 			/** Update Person **/
-			
-			Person3VO person = this.getPerson3Service().findByPk(labContact.getPersonVO().getPersonId());
+
+			Person3VO person;
+			Integer personId = labContact.getPersonVO().getPersonId();
+			if (personId != null) {
+				// Update
+				person = this.getPerson3Service().findByPk(personId);
+			} else {
+				person = new Person3VO();
+			}
 			person.setEmailAddress(labContact.getPersonVO().getEmailAddress());			
 			person.setFamilyName(labContact.getPersonVO().getFamilyName());
 			person.setFaxNumber(labContact.getPersonVO().getFaxNumber());
 			person.setGivenName(labContact.getPersonVO().getGivenName());
 			person.setPhoneNumber(labContact.getPersonVO().getPhoneNumber());
 			person.setTitle(labContact.getPersonVO().getTitle());
+
+			Laboratory3VO lab;
+			if (person.getLaboratoryVO() != null) {
+				lab = person.getLaboratoryVO();
+			} else {
+				lab = new Laboratory3VO();
+			}
+			lab.setAddress(labContact.getPersonVO().getLaboratoryVO().getAddress());
+			lab.setName(labContact.getPersonVO().getLaboratoryVO().getName());
+			lab = this.getLaboratory3Service().merge(lab);
+
+			person.setLaboratoryVO(lab);
 			person = this.getPerson3Service().merge(person);
-			
-			person.getLaboratoryVO().setAddress(labContact.getPersonVO().getLaboratoryVO().getAddress());
-			person.getLaboratoryVO().setName(labContact.getPersonVO().getLaboratoryVO().getName());
-			this.getLaboratory3Service().merge(person.getLaboratoryVO());
-			
+
 			labContact.setPersonVO(person);
 			/** Update LabContact **/
 			labContact.setProposalVO(this.getProposal3Service().findByPk(this.getProposalId(proposal)));
 			
-			
-			
-			labContact = this.getLabContact3Service().update(labContact);
+			labContact = this.getLabContact3Service().merge(labContact);
 			this.logFinish(methodName, id, logger);
 			return sendResponse(labContact);
 		} catch (Exception e) {

@@ -32,6 +32,8 @@ public interface Person3Service {
 		
 	public abstract Person3VO merge(Person3VO detachedInstance);
 
+//	public abstract Person3VO create(Person3VO vo);
+
 	/**
 	 * Remove the Person3 from its pk.
 	 * 

@@ -98,9 +98,14 @@ public class Person3ServiceBean implements Person3Service, Person3ServiceLocal {
 	 * @return the persisted entity.
 	 */
 	public Person3VO create(final Person3VO vo)  {
-		
+
 		return this.merge(vo);
 	}
+//	@Override
+//	public Person3VO create(final Person3VO vo)  {
+//		entityManager.persist(vo);
+//		return vo;
+//	}
 
 
 	/**
