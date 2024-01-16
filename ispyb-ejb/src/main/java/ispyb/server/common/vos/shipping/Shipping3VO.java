@@ -128,6 +128,15 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 	@JoinTable(name = "ShippingHasSession", joinColumns = { @JoinColumn(name = "shippingId", referencedColumnName = "shippingId") }, inverseJoinColumns = { @JoinColumn(name = "sessionId", referencedColumnName = "sessionId") })
 	protected Set<Session3VO> sessions;
 
+	@Column(name = "pickup_time_preference")
+	protected String pickupTimePreference;
+
+	@Column(name = "weight_dimensions")
+	protected String weightDimensions;
+
+	@Column(name = "tracking_number")
+	protected String trackingNumber;
+
 	public Shipping3VO() {
 		super();
 	}
@@ -137,7 +146,8 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 			String deliveryAgentFlightCode, String shippingStatus, Date timeStamp, Integer laboratoryId,
 			Boolean isStorageShipping, Date creationDate, String comments, LabContact3VO sendingLabContactVO,
 			LabContact3VO returnLabContactVO, String returnCourier, Date dateOfShippingToUser, String shippingType,
-			Set<Dewar3VO> dewarVOs, Set<Session3VO> sessions) {
+			Set<Dewar3VO> dewarVOs, Set<Session3VO> sessions, String pickupTimePreference, String weightDimensions,
+		    String trackingNumber) {
 		super();
 		this.shippingId = shippingId;
 		this.proposalVO = proposalVO;
@@ -160,6 +170,9 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 		this.shippingType = shippingType;
 		this.dewarVOs = dewarVOs;
 		this.sessions = sessions;
+		this.pickupTimePreference = pickupTimePreference;
+		this.weightDimensions = weightDimensions;
+		this.trackingNumber = trackingNumber;
 	}
 
 	@Override
@@ -340,6 +353,18 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 	public void setDewarVOs(Set<Dewar3VO> dewarVOs) {
 		this.dewarVOs = dewarVOs;
 	}
+
+	public String getPickupTimePreference() { return pickupTimePreference; }
+
+	public void setPickupTimePreference(String pickupTimePreference) { this.pickupTimePreference = pickupTimePreference; }
+
+	public String getWeightDimensions() { return weightDimensions; }
+
+	public void setWeightDimensions(String weightDimensions) { this.weightDimensions = weightDimensions; }
+
+	public String getTrackingNumber() { return trackingNumber; }
+
+	public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
 
 	public Integer getProposalVOId() {
 		return proposalVO == null ? null : proposalVO.getProposalId();

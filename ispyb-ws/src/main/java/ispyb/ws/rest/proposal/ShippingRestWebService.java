@@ -480,7 +480,7 @@ public class ShippingRestWebService extends MXRestWebService {
 	
 	public Response saveShipping(@PathParam("token") String token, @PathParam("proposal") String proposal,
 			@FormParam("shippingId") String shippingId, @FormParam("name") String name,
-			@FormParam("comments") String comments, 
+			@FormParam("comments") String comments,
 			@FormParam("billingReference") String billingReference,
 			@FormParam("courierAccount") String courierAccount,
 			@FormParam("dewarAvgCustomsValue") String dewarAvgCustomsValue,
@@ -488,7 +488,10 @@ public class ShippingRestWebService extends MXRestWebService {
 			@FormParam("returnCourier") String returnCourier,
 			@FormParam("sendingLabContactId") int sendingLabContactId,
 			@FormParam("returnLabContactId") int returnLabContactId,
-			@FormParam("sessionId") String sessionId) {
+			@FormParam("sessionId") String sessionId,
+			@FormParam("pickupTimePreference") String pickupTimePreference,
+			@FormParam("weightDimensions") String weightDimensions,
+			@FormParam("trackingNumber") String trackingNumber) {
 
 		long id = this.logInit("saveShipping", logger, token, proposal, shippingId, name, comments, billingReference, courierAccount,  dewarAvgCustomsValue, dewarAvgTransportValue, returnCourier, sendingLabContactId, returnLabContactId, sessionId );
 		try {
@@ -535,6 +538,9 @@ public class ShippingRestWebService extends MXRestWebService {
 			shipping3VO.setCreationDate(new Date());
 			shipping3VO.setTimeStamp(new Date());
 			shipping3VO.setShippingType(Constants.DEWAR_TRACKING_SHIPPING_TYPE);
+			shipping3VO.setPickupTimePreference(pickupTimePreference);
+			shipping3VO.setWeightDimensions(weightDimensions);
+			shipping3VO.setTrackingNumber(trackingNumber);
 
 			/** Lab contacts **/
 			LabContact3VO sendingLabContact = this.getLabContact3Service().findByPk(sendingLabContactId);
