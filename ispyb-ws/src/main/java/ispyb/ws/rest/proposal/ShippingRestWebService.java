@@ -531,8 +531,10 @@ public class ShippingRestWebService extends MXRestWebService {
 				}
 			}
 
+			if (shippingId == null || "".equals(shippingId)) {
+				shipping3VO.setShippingStatus(Constants.SHIPPING_STATUS_OPENED);
+			}
 			shipping3VO.setShippingName(name);
-			shipping3VO.setShippingStatus(Constants.SHIPPING_STATUS_OPENED);
 			shipping3VO.setComments(comments);
 			shipping3VO.setProposalVO(getProposal3Service().findByPk(this.getProposalId(proposal)));
 			shipping3VO.setCreationDate(new Date());
