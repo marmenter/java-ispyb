@@ -19,6 +19,7 @@
 
 package ispyb.server.common.vos.shipping;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import ispyb.server.common.vos.ISPyBValueObject;
 import ispyb.server.common.vos.proposals.LabContact3VO;
 import ispyb.server.common.vos.proposals.Proposal3VO;
@@ -137,17 +138,20 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 	@Column(name = "tracking_number")
 	protected String trackingNumber;
 
+	@Column(name = "is_financed")
+	protected Boolean isFinanced;
+
 	public Shipping3VO() {
 		super();
 	}
 
 	public Shipping3VO(Integer shippingId, Proposal3VO proposalVO, String shippingName, String deliveryAgentAgentName,
-			Date deliveryAgentShippingDate, Date deliveryAgentDeliveryDate, String deliveryAgentAgentCode,
-			String deliveryAgentFlightCode, String shippingStatus, Date timeStamp, Integer laboratoryId,
-			Boolean isStorageShipping, Date creationDate, String comments, LabContact3VO sendingLabContactVO,
-			LabContact3VO returnLabContactVO, String returnCourier, Date dateOfShippingToUser, String shippingType,
-			Set<Dewar3VO> dewarVOs, Set<Session3VO> sessions, String pickupTimePreference, String weightDimensions,
-		    String trackingNumber) {
+					   Date deliveryAgentShippingDate, Date deliveryAgentDeliveryDate, String deliveryAgentAgentCode,
+					   String deliveryAgentFlightCode, String shippingStatus, Date timeStamp, Integer laboratoryId,
+					   Boolean isStorageShipping, Date creationDate, String comments, LabContact3VO sendingLabContactVO,
+					   LabContact3VO returnLabContactVO, String returnCourier, Date dateOfShippingToUser, String shippingType,
+					   Set<Dewar3VO> dewarVOs, Set<Session3VO> sessions, String pickupTimePreference, String weightDimensions,
+					   String trackingNumber, Boolean isFinanced) {
 		super();
 		this.shippingId = shippingId;
 		this.proposalVO = proposalVO;
@@ -173,6 +177,7 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 		this.pickupTimePreference = pickupTimePreference;
 		this.weightDimensions = weightDimensions;
 		this.trackingNumber = trackingNumber;
+		this.isFinanced = isFinanced;
 	}
 
 	@Override
@@ -365,6 +370,10 @@ public class Shipping3VO extends ISPyBValueObject implements Cloneable {
 	public String getTrackingNumber() { return trackingNumber; }
 
 	public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
+
+	public Boolean getIsFinanced() { return isFinanced; }
+
+	public void setIsFinanced(Boolean isFinanced) { this.isFinanced = isFinanced; }
 
 	public Integer getProposalVOId() {
 		return proposalVO == null ? null : proposalVO.getProposalId();

@@ -3,6 +3,7 @@ package ispyb.ws.rest.proposal;
 import generated.ws.smis.ProposalParticipantInfoLightVO;
 import ispyb.common.util.Constants;
 import ispyb.common.util.StringUtils;
+import ispyb.server.common.vos.login.Login3VO;
 import ispyb.server.common.vos.proposals.LabContact3VO;
 import ispyb.server.common.vos.proposals.Laboratory3VO;
 import ispyb.server.common.vos.proposals.Person3VO;
@@ -491,7 +492,8 @@ public class ShippingRestWebService extends MXRestWebService {
 			@FormParam("sessionId") String sessionId,
 			@FormParam("pickupTimePreference") String pickupTimePreference,
 			@FormParam("weightDimensions") String weightDimensions,
-			@FormParam("trackingNumber") String trackingNumber) {
+			@FormParam("trackingNumber") String trackingNumber,
+			@FormParam("isFinanced") Boolean isFinanced) {
 
 		long id = this.logInit("saveShipping", logger, token, proposal, shippingId, name, comments, billingReference, courierAccount,  dewarAvgCustomsValue, dewarAvgTransportValue, returnCourier, sendingLabContactId, returnLabContactId, sessionId );
 		try {
@@ -543,6 +545,11 @@ public class ShippingRestWebService extends MXRestWebService {
 			shipping3VO.setPickupTimePreference(pickupTimePreference);
 			shipping3VO.setWeightDimensions(weightDimensions);
 			shipping3VO.setTrackingNumber(trackingNumber);
+
+			Login3VO login3VO = this.getLogin3Service().findByToken(token);
+			if (login3VO.isManager()) {
+				shipping3VO.setIsFinanced(isFinanced);
+			}
 
 			/** Lab contacts **/
 			LabContact3VO sendingLabContact = this.getLabContact3Service().findByPk(sendingLabContactId);
