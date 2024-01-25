@@ -21,7 +21,7 @@ public class RestWebService extends ParentWebService {
 		if (login3VO != null){
 			if (login3VO.isValid()){
 				
-				if (login3VO.isLocalContact() || login3VO.isManager()){
+				if (login3VO.isLocalContact() || login3VO.isManager() || login3VO.isStore()){
 					proposals = this.getProposal3Service().findProposals();
 				}
 				else{

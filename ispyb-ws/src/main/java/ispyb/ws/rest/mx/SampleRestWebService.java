@@ -127,7 +127,7 @@ public class SampleRestWebService extends MXRestWebService {
 		}
 	}
 	
-	@RolesAllowed({ "User", "Manager", "Industrial", "Localcontact" })
+	@RolesAllowed({ "User", "Manager", "Industrial", "Localcontact", "Store" })
 	@GET
 	@Path("{token}/proposal/{proposal}/mx/sample/containerid/{containerid}/list")
 	@Produces({ "application/json" })

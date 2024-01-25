@@ -55,7 +55,7 @@ public class SessionRestWebService extends RestWebService {
 	}
 	
 	
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/session/list")
 	@Produces({ "application/json" })
@@ -77,7 +77,7 @@ public class SessionRestWebService extends RestWebService {
 	}
 	
 	
-	@RolesAllowed({ "User", "Manager", "Industrial", "Localcontact" })
+	@RolesAllowed({ "User", "Manager", "Industrial", "Localcontact", "Store" })
 	@GET
 	@GZIP
 	@Path("{token}/proposal/{proposal}/session/list")
@@ -146,7 +146,7 @@ public class SessionRestWebService extends RestWebService {
 		return (SessionService) Ejb3ServiceLocator.getInstance().getLocalService(SessionService.class);
 	}
 
-	@RolesAllowed({ "Manager", "Localcontact" })
+	@RolesAllowed({ "Manager", "Localcontact", "Store" })
 	@GET
 	@GZIP
 	@Path("{token}/proposal/session/date/{startdate}/{enddate}/list")
@@ -160,7 +160,7 @@ public class SessionRestWebService extends RestWebService {
 		try {
 			List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 			Login3VO login = this.getLogin3Service().findByToken(token);
-			if (login.isManager()){
+			if (login.isManager() || login.isStore()){
 				result = getSessionService().getSessionViewByDates(start, end);
 			}
 			else{

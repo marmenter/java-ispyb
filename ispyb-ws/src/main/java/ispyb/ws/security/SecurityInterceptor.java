@@ -71,7 +71,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
 			if (login != null) {
 				if (login.checkRoles(rolesSet)){
 					if (login.isValid()) {
-						if (login.isManager() || login.isLocalContact()) {
+						if (login.isManager() || login.isLocalContact() || login.isStore()) {
 							/** TODO: ISPyB might want to check that local contact has the permission on this proposal **/
 							return;
 						}

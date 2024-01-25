@@ -104,6 +104,11 @@ public class Login3VO implements java.io.Serializable {
 	public boolean isManager(){
 	    return  this.getRoles().toUpperCase().contains("MANAGER");
 	}
+
+	@Transient
+	public boolean isStore(){
+		return  this.getRoles().toUpperCase().contains("STORE");
+	}
 	
 	@Transient
 	public boolean isUser(){

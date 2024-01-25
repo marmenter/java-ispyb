@@ -151,7 +151,7 @@ public class ShippingRestWebService extends MXRestWebService {
 	
 	
 	
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/shipping/list")
 	@Produces({ "application/json" })
@@ -167,7 +167,7 @@ public class ShippingRestWebService extends MXRestWebService {
 		}
 	}
 
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/shipping/{shippingId}/get")
 	@Produces({ "application/json" })
@@ -205,7 +205,7 @@ public class ShippingRestWebService extends MXRestWebService {
 	}*/
 
 	
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/shipping/{shippingId}/status/{status}/update")
 	@Produces({ "application/json" })
@@ -437,7 +437,7 @@ public class ShippingRestWebService extends MXRestWebService {
 	}
 
 
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/shipping/{shippingId}/datacollecitons/list")
 	@Produces({ "application/json" })

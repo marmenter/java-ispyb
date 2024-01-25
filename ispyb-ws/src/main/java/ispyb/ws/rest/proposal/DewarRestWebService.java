@@ -79,7 +79,7 @@ public class DewarRestWebService extends RestWebService {
 	}
 	
 	@Deprecated
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/shipping/{shippingId}/dewar/list")
 	@Produces({ "application/json" })
@@ -98,7 +98,7 @@ public class DewarRestWebService extends RestWebService {
 	}
 	
 	
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/dewar/list")
 	@Produces({ "application/json" })

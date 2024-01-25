@@ -42,7 +42,7 @@ public class ProposalRestWebService extends MXRestWebService{
 
 	private final static Logger logger = Logger.getLogger(ProposalRestWebService.class);
 
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/list")
 	@Produces({ "application/json" })
@@ -58,7 +58,7 @@ public class ProposalRestWebService extends MXRestWebService{
 		}				
 	}
 	
-	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact"})
+	@RolesAllowed({"User", "Manager", "Industrial", "Localcontact", "Store"})
 	@GET
 	@Path("{token}/proposal/{proposal}/info/get")
 	@Produces({ "application/json" })
