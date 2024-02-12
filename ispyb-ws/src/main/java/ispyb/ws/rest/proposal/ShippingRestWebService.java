@@ -219,6 +219,10 @@ public class ShippingRestWebService extends MXRestWebService {
 		try {
 			Shipping3VO result = this.getShipping3Service().findByPk(shippingId, true,true, false);
 			logger.info("Updating shipping status " + result.getShippingId() + " from " + result.getShippingStatus() + " to " + status);
+			// Empty Tracking Number on dewar arrival
+			if (status.equals("at ALBA")) {
+				result.setTrackingNumber("");
+			}
 			result.setShippingStatus(status);
 			this.getShipping3Service().update(result);
 			/**

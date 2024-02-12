@@ -452,8 +452,7 @@ public class DewarRestWebService extends RestWebService {
 		// Properties to fill in the labels
 		Map<String, String> fieldNamesAndValues = new HashMap<String, String>();
 		fieldNamesAndValues.put("TF_parcelLabel", dewar.getCode());
-		fieldNamesAndValues.put("TF_parcelBarcode", "*" + dewar.getBarCode()
-				+ "*");
+		fieldNamesAndValues.put("TF_parcelBarcode", dewar.getBarCode());
 		fieldNamesAndValues.put("TF_shipmentName", shipping.getShippingName());
 		fieldNamesAndValues.put("TF_parcelsNumber",
 				Integer.toString(shipping.getDewarVOs().size()));

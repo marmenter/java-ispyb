@@ -21,21 +21,17 @@
  ******************************************************************************/
 package ispyb.common.util;
 
+import java.awt.*;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
+import com.lowagie.text.pdf.*;
 import org.apache.log4j.Logger;
 
 import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfDictionary;
-import com.lowagie.text.pdf.PdfName;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.PdfWriter;
 
 public class PDFFormFiller extends PdfWriter {
 	/*************
@@ -179,6 +175,23 @@ public class PDFFormFiller extends PdfWriter {
 			this.writer.setPdfVersion(PdfWriter.VERSION_1_3);
 			this.setPageOrientation(pageOrientation);
 			this.formFields = this.stamper.getAcroFields();
+
+			// set Barcode font
+			String LibreBarcode128 = Constants.LIBREBARCODE128_FILENAME;
+			GraphicsEnvironment GE = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			List<String> AVAILABLE_FONT_FAMILY_NAMES = Arrays.asList(GE.getAvailableFontFamilyNames());
+			File LIBREBARCODE128_FILE_ITEM = new File(LibreBarcode128);
+			if (LIBREBARCODE128_FILE_ITEM.exists()) {
+				Font FONT = Font.createFont(Font.TRUETYPE_FONT, LIBREBARCODE128_FILE_ITEM);
+				if (!AVAILABLE_FONT_FAMILY_NAMES.contains(FONT.getFontName())) {
+					GE.registerFont(FONT);
+					BaseFont BASEFONT = BaseFont.createFont(LibreBarcode128, BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, null, null);
+					this.formFields.setFieldProperty("TF_parcelBarcode", "textfont", BASEFONT, null);
+					this.formFields.setFieldProperty("TF_parcelBarcode_2", "textfont", BASEFONT, null);
+					this.formFields.setFieldProperty("TF_parcelBarcode_3", "textfont", BASEFONT, null);
+				}
+			}
+
 		} catch (Exception e) {
 			LOG.error("init", e);
 			throw new Exception("Error initializing the PDF objects for file \"" + pdfForm + "\".");
@@ -188,7 +201,7 @@ public class PDFFormFiller extends PdfWriter {
 	/**
 	 * Initialize the PDF document
 	 * 
-	 * @param pdfForm
+	 * @param bs
 	 *            the path to the PDF form to be filled
 	 * @param os
 	 *            the output stream object
@@ -240,7 +253,7 @@ public class PDFFormFiller extends PdfWriter {
 	/**
 	 * Initialize the PDF document using the default page orientation
 	 * 
-	 * @param pdfForm
+	 * @param bs
 	 *            the path to the PDF form to be filled
 	 * @param os
 	 *            the output stream object

@@ -1069,6 +1069,14 @@ public final class Constants {
 	public static final String TEMPLATE_PDF_PARCEL_LABELS_RELATIVE_PATH = TEMPLATE_RELATIVE_DIRECTORY_PATH
 			+ TEMPLATE_PDF_PARCEL_LABELS_FILENAME;
 
+	public static final String TEMPLATE_PDF_FONTS_DIR = getProperty("ispyb.folder.fonts.pdf.dir");
+
+	public static final String LIBREBARCODE128 = getProperty("ispyb.folder.fonts.pdf.128");
+
+
+	public static final String LIBREBARCODE128_FILENAME = TEMPLATE_PDF_FONTS_DIR + LIBREBARCODE128;
+
+
 	/**
 	 * PDF template used for parcel labels, with the World Courier checklist
 	 */
