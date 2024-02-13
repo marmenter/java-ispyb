@@ -559,8 +559,8 @@
 
 			<ispyb.root.folder>/storagebls</ispyb.root.folder>
 			<ispyb.uploaded.root.folder>/home/web/ispybtest/</ispyb.uploaded.root.folder>
-			<ispyb.upload.folder.pdf>/home/vagrant/Projects/java/ispyb/ISPyB/ispyb-ejb/src/main/resources/pdf/</ispyb.upload.folder.pdf>
-			<ispyb.folder.fonts.pdf.dir>/home/vagrant/Projects/java/ispyb/</ispyb.folder.fonts.pdf.dir>
+			<ispyb.upload.folder.pdf>/home/web/ispybtest/</ispyb.upload.folder.pdf>
+			<ispyb.folder.fonts.pdf.dir>/home/web/.fonts/</ispyb.folder.fonts.pdf.dir>
 			<ispyb.folder.fonts.pdf.128>LibreBarcode128-Regular.ttf</ispyb.folder.fonts.pdf.128>
 
 			<ispyb.server.name.prod>xxxx.cells.es</ispyb.server.name.prod>
