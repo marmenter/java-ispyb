@@ -110,6 +110,8 @@
 			<groupId>tomcat</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.0-5.5.23</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/../dependencies/commons-fileupload-1.0-5.5.23.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
